@@ -1,0 +1,23 @@
+web:
+  image: wordpress:4.3-apache
+  environment:
+    - WORDPRESS_DB_PASSWORD=secret
+    - VIRTUAL_HOST=wordpress.dev
+  volumes:
+    - /projects/wordpress/:/var/www/html
+  links:
+    - db:mysql
+  command: sh -c '
+    if [ ! -d wp-content ]; then
+      curl -fSL "https://github.com/WordPress/WordPress/archive/4.3.tar.gz" -o wordpress.tar.gz;
+      tar -xz --strip-components=1 -f wordpress.tar.gz;
+      rm wordpress.tar.gz;
+    fi;
+    chown www-data:www-data -R .;
+    apache2-foreground;
+    '
+db:
+  image: mysql:5.7
+  environment:
+    - MYSQL_ROOT_PASSWORD=secret
+    - MYSQL_DATABASE=wordpress

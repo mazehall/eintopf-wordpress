@@ -1,0 +1,14 @@
+{
+  "name": "eintopf-wordpress",
+  "version": "0.1.0",
+  "scripts": {
+    "start": "sh ./start.sh",
+    "stop": "sh ./stop.sh"
+  },
+  "mazehall": true,
+  "eintopf": {
+    "name": "WordPress",
+    "description": "WordPress is a free and open source blogging tool and a content management system (CMS) based on PHP and MySQL"
+  },
+  "license": "MIT"
+}
