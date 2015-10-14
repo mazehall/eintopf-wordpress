@@ -1,21 +1,30 @@
-#!/usr/bin/env bash
+#!/usr/bin/env sh
 
-DOCKER_COMPOSE_BIN=`which docker-compose`
-echo $DOCKER_HOST
-# env
-if [ -z "$DOCKER_HOST" ]; then
-    echo "no DOCKER_HOST env set";
-    exit 1
-fi
-if [ -z "$DOCKER_COMPOSE_BIN" ]; then
-    echo "docker-compose binary not found";
-    exit 1
-fi
+. ./project.sh
 
-echo "start docker containers"
-if ! $DOCKER_COMPOSE_BIN up -d ; then
-    echo "starting docker containers failed";
+WORDPRESS_TAG="4.3.1"
+
+if ! [ -d "$PROJECT_PATH/.git" ]; then
+  echo "cloning wordpress sources..."
+  if ! xgit clone https://github.com/WordPress/WordPress "$PROJECT_PATH"; then
+    echo "git clone failed"
     exit 1
+  fi
 fi
 
+cd "$PROJECT_PATH"
+if [ "`git name-rev --tags --name-only $(git rev-parse HEAD)`" != "$WORDPRESS_TAG" ]; then
+  echo "Checkout wordpress version $WORDPRESS_TAG..."
+  if ! git fetch || ! git checkout $WORDPRESS_TAG; then
+    echo "Failed to change to wordpress version $WORDPRESS_TAG"
+    exit
+  fi
+fi
+
+if ! [ -f "$PROJECT_PATH/wp-config.php" ]; then
+  echo "Copy default wp-config..."
+  cp "$CONFIG_PATH/wp-config.php" "$PROJECT_PATH/wp-config.php"
+fi
+
+xcompose "up -d"
 echo "done"
