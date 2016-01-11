@@ -2,8 +2,6 @@
 
 . ./project.sh
 
-WORDPRESS_TAG="4.3.1"
-
 if ! [ -d "$PROJECT_PATH/.git" ]; then
   echo "cloning wordpress sources..."
   if ! xgit clone https://github.com/WordPress/WordPress "$PROJECT_PATH"; then

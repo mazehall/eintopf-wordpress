@@ -6,6 +6,7 @@
 
 PROJECT_DIR="wordpress"
 CONFIG_DIR="${PWD##*/}"
+WORDPRESS_TAG="4.4.1"
 
 ####
 . ./project.env.sh
