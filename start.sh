@@ -13,7 +13,7 @@ fi
 cd "$PROJECT_PATH"
 if [ "`git name-rev --tags --name-only $(git rev-parse HEAD)`" != "$WORDPRESS_TAG" ]; then
   echo "Checkout wordpress version $WORDPRESS_TAG..."
-  if ! git fetch || ! git checkout $WORDPRESS_TAG; then
+  if ! git fetch --tag || ! git checkout $WORDPRESS_TAG; then
     echo "Failed to change to wordpress version $WORDPRESS_TAG"
     exit
   fi
