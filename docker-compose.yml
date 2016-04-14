@@ -3,7 +3,7 @@ web:
   environment:
     - VIRTUAL_HOST=wordpress.dev
   volumes:
-    - /projects/wordpress/:/data/http
+    - ${PROJECT_PATH}/web:/data/http
   links:
     - db:mysql
 
